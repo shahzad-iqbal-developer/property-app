@@ -1,0 +1,92 @@
+<agm-map
+  [latitude]="lat"
+  [longitude]="lng"
+  [zoom]="zoom"
+  (mapReady)="mapReadyHandler($event)"
+>
+  <agm-marker
+    *ngFor="let data of propertiesList; let i = index"
+    [latitude]="data.lat"
+    [longitude]="data.lng"
+    (markerClick)="clickedMarker(data, i)"
+  >
+  </agm-marker>
+</agm-map>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ editProperty ? 'Update' : 'Add' }} Property</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="propertyForm">
+      <div class="mb-3">
+        <label for="roomNumber" class="form-label">Room Number</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="roomNumber"
+          id="roomNumber"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="square" class="form-label">Square</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="square"
+          id="square"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="description"
+          id="description"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="address"
+          id="address"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="images" class="form-label">Images</label>
+        <input type="file" (change)="handleFileUpload($event.target.files)" class="form-control" multiple />
+      </div>
+      <div *ngIf="editProperty" class="mb-3">
+        <ng-image-slider #nav
+          [images]="imageObject"
+          [infinite]="false"
+          [autoSlide]="1"
+          [imageSize]="{width: '25%', height: 200}"
+          slideImage="1">
+        </ng-image-slider>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
+    >
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-outline-success" (click)="onSubmit()">
+      {{ editProperty ? 'Update' : 'Add' }}
+    </button>
+  </div>
+</ng-template>
