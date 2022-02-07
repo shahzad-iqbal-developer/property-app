@@ -16,6 +16,9 @@ import { NgImageSliderModule } from 'ng-image-slider';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'ENTER-YOUR-KEY',
+    }),
     NgbModule,
     HttpClientModule,
     NgImageSliderModule
