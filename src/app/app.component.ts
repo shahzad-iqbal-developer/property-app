@@ -135,6 +135,7 @@ export class AppComponent implements OnInit {
   }
 
   handleFileUpload(files: FileList) {
+    this.images.clear();
     if(files && files.length) {
       Array.from(files).forEach(file => { 
         this.propertyService.saveImages(file).subscribe(res=>{
@@ -159,6 +160,7 @@ export class AppComponent implements OnInit {
   clickedMarker(property: any, index: number) {
     this.editProperty = property;
     this.propertyForm.patchValue(property);
+    this.patchImagesValues();
     for(let img of property.images){
       let imgObj={
         image:environment.baseUrl+img.url,
@@ -168,6 +170,13 @@ export class AppComponent implements OnInit {
       this.imageObject.push(imgObj);
     }
     this.open(this.contentRef);
+  }
+
+  patchImagesValues(){
+    while (this.images.length) {
+      this.images.removeAt(0);
+    }
+    this.editProperty["images"].forEach(image => this.images.push(this.fb.group(image)));
   }
 
   removeControlsFromImageArrray(){
