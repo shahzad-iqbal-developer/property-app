@@ -1,6 +1,7 @@
 import { Component, NgZone, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 import { PropertyService } from './services/property.service';
 
 @Component({
@@ -36,8 +37,8 @@ export class AppComponent implements OnInit {
       square: ['',Validators.required],
       description: ['',Validators.required],
       address: ['',Validators.required],
-      lat: ['',Validators.required],
-      lng: ['',Validators.required],
+      latitude: ['',Validators.required],
+      longitude: ['',Validators.required],
       images: this.fb.array([])
     })
   }
@@ -66,8 +67,8 @@ export class AppComponent implements OnInit {
       this.zone.run(() => {
         this.open(this.contentRef);
         this.propertyForm.patchValue({
-          lat:e.latLng.lat(),
-          lng:e.latLng.lng()
+          latitude:e.latLng.lat(),
+          longitude:e.latLng.lng()
         })
       });
     });
@@ -80,22 +81,33 @@ export class AppComponent implements OnInit {
           this.propertiesList.push(res);
           this.modalService.dismissAll();
           this.propertyForm.reset();
+          this.removeControlsFromImageArrray();
         }
       },error=>{
   
       })
     }else{
-      this.propertyService.updateProperty(this.editProperty.id,this.propertyForm.value).subscribe(res=>{
+      let updateProperty = {...this.propertyForm.value,id:this.editProperty.id};
+      this.propertyService.updateProperty(updateProperty).subscribe(res=>{
         if(res){
           this.propertiesList.push(res);
           this.modalService.dismissAll();
           this.propertyForm.reset();
+          this.removeControlsFromImageArrray();
         }
       },error=>{
   
       })
     }
     
+  }
+
+  onDelete(){
+    this.propertyService.deleteProperty(this.editProperty.id).subscribe(res=>{
+    },error=>{
+      this.getProperties();
+      this.modalService.dismissAll();
+    });
   }
 
   open(content) {
@@ -127,7 +139,7 @@ export class AppComponent implements OnInit {
       Array.from(files).forEach(file => { 
         this.propertyService.saveImages(file).subscribe(res=>{
           if(res){
-            this.addImages(res.name);
+            this.addImages(res);
           }
         },error=>{
   
@@ -136,22 +148,34 @@ export class AppComponent implements OnInit {
     }
   }
 
-  addImages(image) {
-    this.images.push(this.fb.control(image));
+  addImages(res) {
+    this.images.push(this.fb.group({
+      id:[res.id],
+      name:[res.name],
+      url:[res.url]
+    }));
   }
 
   clickedMarker(property: any, index: number) {
     this.editProperty = property;
+    debugger
     this.propertyForm.patchValue(property);
+    debugger
     for(let img of property.images){
       let imgObj={
-        image:img,
-        thumbImage:img,
-        title:img
+        image:environment.baseUrl+img.url,
+        thumbImage:environment.baseUrl+img.url,
+        title:img.name
       }
       this.imageObject.push(imgObj);
     }
     this.open(this.contentRef);
+  }
+
+  removeControlsFromImageArrray(){
+    while (this.images.length) {
+      this.images.removeAt(0);
+    }
   }
 
 }

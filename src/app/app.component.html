@@ -6,8 +6,8 @@
 >
   <agm-marker
     *ngFor="let data of propertiesList; let i = index"
-    [latitude]="data.lat"
-    [longitude]="data.lng"
+    [latitude]="data.latitude"
+    [longitude]="data.longitude"
     (markerClick)="clickedMarker(data, i)"
   >
   </agm-marker>
@@ -29,7 +29,7 @@
       <div class="mb-3">
         <label for="roomNumber" class="form-label">Room Number</label>
         <input
-          type="text"
+          type="number"
           class="form-control"
           formControlName="roomNumber"
           id="roomNumber"
@@ -38,7 +38,7 @@
       <div class="mb-3">
         <label for="square" class="form-label">Square</label>
         <input
-          type="text"
+          type="number"
           class="form-control"
           formControlName="square"
           id="square"
@@ -84,6 +84,14 @@
       (click)="modal.close('Save click')"
     >
       Cancel
+    </button>
+    <button
+      *ngIf="editProperty"
+      type="button"
+      class="btn btn-outline-danger"
+      (click)="onDelete()"
+    >
+      Delete
     </button>
     <button type="submit" class="btn btn-outline-success" (click)="onSubmit()">
       {{ editProperty ? 'Update' : 'Add' }}

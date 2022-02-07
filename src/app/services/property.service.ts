@@ -13,25 +13,29 @@ export class PropertyService {
   constructor(private http: HttpClient) { }
 
   getProperties():Observable<any>{
-    return this.http.get(`${this.baseUrl}/properties`);
+    return this.http.get(`${this.baseUrl}/location`);
   }
 
   getPropertyById(id):Observable<any>{
-    return this.http.get(`${this.baseUrl}/properties/${id}`);
+    return this.http.get(`${this.baseUrl}/location/${id}`);
   }
 
   saveProperty(obj):Observable<any>{
-    return this.http.post(`${this.baseUrl}/properties`,obj);
+    return this.http.post(`${this.baseUrl}/location`,obj);
   }
 
-  updateProperty(id,obj):Observable<any>{
-    return this.http.put(`${this.baseUrl}/properties/${id}`,obj);
+  updateProperty(obj):Observable<any>{
+    return this.http.put(`${this.baseUrl}/location`,obj);
   }
 
   saveImages(image):Observable<any>{
-    // const formData: FormData = new FormData();
-    // formData.append('images', image, image.name);
-    return this.http.post(`${this.baseUrl}/images`,{name:image.name});
+    const formData: FormData = new FormData();
+    formData.append('image', image, image.name);
+    return this.http.post(`${this.baseUrl}/image`,formData);
+  }
+
+  deleteProperty(id):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/location/${id}`);
   }
 
 }
