@@ -158,9 +158,7 @@ export class AppComponent implements OnInit {
 
   clickedMarker(property: any, index: number) {
     this.editProperty = property;
-    debugger
     this.propertyForm.patchValue(property);
-    debugger
     for(let img of property.images){
       let imgObj={
         image:environment.baseUrl+img.url,
