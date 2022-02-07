@@ -44,16 +44,14 @@ class LocationApplicationTests {
 	@Test
 	public void findByIdTest() {
 		Long id = 1l;
-		List<LocationImage> locationImageList = Arrays.asList(new LocationImage(1l,"demo.png","/image/demo.png"),new LocationImage(2l,"demo2.png","/image/demo2.png"));
-		Location location = new Location(1l,1234,1234d,"Description Goes Here","Address Goes Here",locationImageList,24.862954377705687,66.99982688023567);
+		Location location = getLocation();
 		when(locationRepository.findById(id)).thenReturn(Optional.of(location));
 		assertEquals(location,locationService.findById(id));
 	}
 
 	@Test
 	public void saveTest(){
-		List<LocationImage> locationImageList = Arrays.asList(new LocationImage(1l,"demo.png","/image/demo.png"),new LocationImage(2l,"demo2.png","/image/demo2.png"));
-		Location location = new Location(1l,1234,1234d,"Description Goes Here","Address Goes Here",locationImageList,24.862954377705687,66.99982688023567);
+		Location location = getLocation();
 		when(locationRepository.save(location)).thenReturn(location);
 		assertEquals(location,locationService.save(location));
 	}
@@ -63,6 +61,12 @@ class LocationApplicationTests {
 		Long id = 1l;
 		locationService.deleteById(id);
 		verify(locationRepository,times(1)).deleteById(id);
+	}
+
+	private Location getLocation(){
+		List<LocationImage> locationImageList = Arrays.asList(new LocationImage(1l,"demo.png","/image/demo.png"),new LocationImage(2l,"demo2.png","/image/demo2.png"));
+		Location location = new Location(1l,1234,1234d,"Description Goes Here","Address Goes Here",locationImageList,24.862954377705687,66.99982688023567);
+		return location;
 	}
 
 }

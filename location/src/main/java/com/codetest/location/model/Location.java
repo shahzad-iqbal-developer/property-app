@@ -37,6 +37,16 @@ public class Location {
         this.longitude = longitude;
     }
 
+    public Location(Integer roomNumber, Double square, String description, String address, List<LocationImage> images, Double latitude, Double longitude) {
+        this.roomNumber = roomNumber;
+        this.square = square;
+        this.description = description;
+        this.address = address;
+        this.images = images;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public Long getId() {
         return id;
     }
