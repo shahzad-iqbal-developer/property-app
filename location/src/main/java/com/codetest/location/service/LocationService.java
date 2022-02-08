@@ -5,11 +5,11 @@ import com.codetest.location.model.Location;
 import java.util.List;
 
 public interface LocationService {
-    Location save(Location location);
+  Location save(Location location);
 
-    void deleteById(Long id);
+  void deleteById(Long id);
 
-    List<Location> findAll();
+  List<Location> findAll();
 
-    Location findById(Long id);
+  Location findById(Long id);
 }

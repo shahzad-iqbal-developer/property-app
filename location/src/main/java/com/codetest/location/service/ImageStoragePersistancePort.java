@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface ImageStoragePersistancePort {
-    public String saveImage(MultipartFile file);
+  public String saveImage(MultipartFile file);
 
-    ResponseEntity<InputStreamResource> getImage(String filename) throws IOException;
+  ResponseEntity<InputStreamResource> getImage(String filename) throws IOException;
 }
